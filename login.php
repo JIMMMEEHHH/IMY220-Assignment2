@@ -42,37 +42,7 @@
 
 				
 				if($row = mysqli_fetch_array($res)){
-					if($numFiles){
-						//echo $numFiles;
-					for($i = 0; $i < $numFiles; $i++){
-						if(($uploadFile["type"][$i] == "image/jpeg" || $uploadFile["type"][$i] == "image/jpg") && $uploadFile["size"][$i] < 10000000){
-							if($uploadFile["error"][$i] > 0){
-								echo "error: " . $uploadFile["error"][$i] . "<br/>";
-							}else{
-								
-									move_uploaded_file($uploadFile["tmp_name"][$i], "gallery/" . $uploadFile["name"][$i]);
-									//$servername = "localhost";
-									//$username = "root";
-									//$password = "";
-									//$db = "tbgallery";
-									//$conn = mysqli_connect($servername, $username, $password, $db);
-									//$user = $row[user_id];
-									$sql = "INSERT INTO tbgallery (image_id, user_id, filename)
-										VALUES('0','" . $row['user_id'] ."',
-										'" . $uploadFile['name'][$i] ."')";
-										if(mysqli_query($mysqli, $sql)){
-											//echo "done";
-										}else{
-											//echo "fuck";
-										}
-									
-											
-							}
-						}else{
-							echo "invalid file" . $uploadFile["name"][$i];
-						}
-				}
-			}
+					
 					
 					echo 	"<table class='table table-bordered mt-3'>
 								<tr>
@@ -101,6 +71,36 @@
 									<input type = 'hidden' id = 'loginPass' name = 'loginPass' value='$pass' />
 								</div>
 						  	</form>";
+					if($numFiles){
+						//echo $numFiles;
+					for($i = 0; $i < $numFiles; $i++){
+						if(($uploadFile["type"][$i] == "image/jpeg" || $uploadFile["type"][$i] == "image/jpg") && $uploadFile["size"][$i] < 10000000){
+							if($uploadFile["error"][$i] > 0){
+								echo 	'<div class="alert alert-danger mt-3" role="alert">
+	  								Error: '. $uploadFile["error"][$i] .'
+	  								</div>';
+							}else{
+								
+									move_uploaded_file($uploadFile["tmp_name"][$i], "gallery/" . $uploadFile["name"][$i]);
+						
+									$sql = "INSERT INTO tbgallery (image_id, user_id, filename)
+										VALUES('0','" . $row['user_id'] ."',
+										'" . $uploadFile['name'][$i] ."')";
+										if(mysqli_query($mysqli, $sql)){
+											
+										}else{
+											
+										}
+									
+											
+							}
+						}else{
+							echo 	'<div class="alert alert-danger mt-3" role="alert">
+	  							Invalid File: '. $uploadFile["name"][$i] .'
+	  						</div>';
+						}
+				}
+			}
 
 					echo '<h1>Image Gallery</h1>
 							<div class = "row imageGallery">';
